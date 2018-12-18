@@ -8,7 +8,7 @@ print(bot.get_me())
 
 updater = Updater(token=bot_properties.TG_BOT_TOKEN)
 dispatcher = updater.dispatcher
-dispatcher.add_handler()
+
 
 def start(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text="I'm a bot, please talk to me!")
