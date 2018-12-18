@@ -1,0 +1,14 @@
+{
+  "name": "DevOps Moscow Bot",
+  "description": "A Telegram bot application for DevOps Moscow.",
+  "image": "heroku/python",
+  "repository": "https://github.com/devopsmoscow/devopsmoscow-bot.git",
+  "keywords": ["python" ],
+  "environments": {
+    "staging": {
+      "scripts": {
+        "test": "python app.py"
+      }
+    }
+  }
+}
