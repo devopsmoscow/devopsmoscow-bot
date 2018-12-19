@@ -6,7 +6,7 @@ from telegram.ext import CommandHandler
 bot = telegram.Bot(token=bot_properties.TG_BOT_TOKEN)
 print(bot.get_me())
 
-updater = Updater(token=bot_properties.TG_BOT_TOKEN)
+updater = Updater(token=bot_properties.TG_BOT_TOKEN, request_kwargs={'read_timeout': 20, 'connect_timeout': 40})
 dispatcher = updater.dispatcher
 
 
