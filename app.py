@@ -16,4 +16,4 @@ def start(bot, update):
 
 start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
-updater.start_polling()
+updater.start_polling(timeout=20, read_latency=40)
