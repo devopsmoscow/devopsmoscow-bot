@@ -4,8 +4,9 @@
   "image": "heroku/python",
   "repository": "https://github.com/devopsmoscow/devopsmoscow-bot.git",
   "keywords": ["python" ],
+  "addons": [ "heroku-postgresql" ],
   "environments": {
-    "staging": {
+    "test": {
       "scripts": {
         "test": "python app.py"
       }
