@@ -10,7 +10,8 @@ class Spammer:
     def __init__(self):
         self.data = []
 
-    def start(self, bot, update):
+    @staticmethod
+    def start(bot, update):
         if update.message.chat_id is not bot_properties.DEVOPS_SUPERGROUP_DETAILS['id']:
             bot.send_message(chat_id=update.message.chat_id, text="This bot is under construction. You'll get an "
                                                                   "additional notification once it will be done.")
@@ -23,7 +24,8 @@ class Spammer:
                 return False
             return True
 
-    def add_group(self, bot, update):
+    @staticmethod
+    def add_group(bot, update):
         for members in update.message.new_chat_members:
             logger = logging.getLogger("deopsmoscow_bot.bot.spammer.Spammer.add_group")
             logger.debug("Got " + members.username + " as new user!")
