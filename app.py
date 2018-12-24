@@ -18,6 +18,7 @@ welcome_handler = CommandHandler(command='welcome', callback=Spammer.send_welcom
 add_group_handler = MessageHandler(callback=Spammer.add_group, filters=Spammer.NewMember())
 dispatcher.add_handler(start_handler)
 dispatcher.add_handler(users_handler)
+dispatcher.add_handler(welcome_handler)
 dispatcher.add_handler(add_group_handler)
 updater.start_polling()
 updater.idle()
