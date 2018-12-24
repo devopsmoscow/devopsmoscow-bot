@@ -12,7 +12,7 @@ def get_users(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text=upd)
 
 
-start_handler = CommandHandler(Spammer.start)
+start_handler = CommandHandler(command='start', callback=Spammer.start)
 users_handler = CommandHandler('users', get_users)
 add_group_handler = MessageHandler(callback=Spammer.add_group, filters=Spammer.NewMember())
 dispatcher.add_handler(start_handler)
