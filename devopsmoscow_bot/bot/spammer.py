@@ -31,3 +31,10 @@ class Spammer:
             logger.debug("Got " + members.username + " as new user!")
             logger.debug(members)
             # bot.send_message(update.message.chat_id, text="{username} add group".format(username=members.username))
+
+    @staticmethod
+    def send_welcome(bot, update):
+        logger = logging.getLogger("deopsmoscow_bot.bot.spammer.Spammer.send_welcome")
+        logger.debug("")
+        chat_id = update['message']['from']['id']
+        bot.send_message(chat_id=chat_id, text="Hey hi! Ima DevOps Moscow Bot!")

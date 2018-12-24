@@ -13,7 +13,8 @@ def get_users(bot, update):
 
 
 start_handler = CommandHandler(command='start', callback=Spammer.start)
-users_handler = CommandHandler('users', get_users)
+users_handler = CommandHandler(command='users', callback=get_users)
+welcome_handler = CommandHandler(command='welcome', callback=Spammer.send_welcome)
 add_group_handler = MessageHandler(callback=Spammer.add_group, filters=Spammer.NewMember())
 dispatcher.add_handler(start_handler)
 dispatcher.add_handler(users_handler)
