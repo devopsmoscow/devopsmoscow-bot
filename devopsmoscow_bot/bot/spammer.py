@@ -37,5 +37,5 @@ class Spammer:
         logger = logging.getLogger("deopsmoscow_bot.bot.spammer.Spammer.send_welcome")
         logger.debug("Messaging user!")
         chat_id = update['message']['from']['id']
-        logger.debug("Sending message to " + chat_id)
+        logger.debug("Sending message to: " + chat_id)
         bot.send_message(chat_id=chat_id, text="Hey hi! Ima DevOps Moscow Bot!")
