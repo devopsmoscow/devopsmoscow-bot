@@ -1,5 +1,5 @@
 from devopsmoscow_bot import bot_properties
-from telegram.ext import Updater, CommandHandler, MessageHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from devopsmoscow_bot.bot.spammer import Spammer
 import logging
 
@@ -16,10 +16,12 @@ start_handler = CommandHandler(command='start', callback=Spammer.start)
 users_handler = CommandHandler(command='users', callback=get_users)
 welcome_handler = CommandHandler(command='welcome', callback=Spammer.send_welcome)
 add_group_handler = MessageHandler(callback=Spammer.add_group, filters=Spammer.NewMember())
+text_message_handler = MessageHandler(Filters.text, Spammer.textMessage)
 dispatcher.add_handler(start_handler)
 dispatcher.add_handler(users_handler)
 dispatcher.add_handler(welcome_handler)
 dispatcher.add_handler(add_group_handler)
+dispatcher.add_handler(text_message_handler)
 updater.start_polling()
 updater.idle()
 
