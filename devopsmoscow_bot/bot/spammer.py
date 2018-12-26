@@ -1,5 +1,7 @@
+import json
 import logging
 
+import apiai
 from telegram.ext import BaseFilter
 
 from devopsmoscow_bot import bot_properties
@@ -30,7 +32,8 @@ class Spammer:
             logger = logging.getLogger("deopsmoscow_bot.bot.spammer.Spammer.add_group")
             logger.debug("Got " + members.username + " as new user!")
             logger.debug(members)
-            # bot.send_message(update.message.chat_id, text="{username} add group".format(username=members.username))
+            bot.send_message(update.message.chat_id, text="@{username} привет! Пожалуйста, отправь  мне /start в ЛС."
+                             .format(username=members.username))
 
     @staticmethod
     def send_welcome(bot, update):
@@ -39,3 +42,16 @@ class Spammer:
         chat_id = update.message.from_user.id
         logger.debug("Sending message to " + str(chat_id))
         bot.send_message(chat_id=chat_id, text="Hey hi! Ima DevOps Moscow Bot!")
+
+    @staticmethod
+    def textMessage(bot, update):
+        request = apiai.ApiAI(bot_properties.DIALOGFLOW_TOKEN).text_request()
+        request.lang = 'ru'
+        request.session_id = 'DevOpsMoscowBot'
+        request.query = update.message.text
+        response_json = json.loads(request.getresponse().read().decode('utf-8'))
+        response = response_json['result']['fulfillment']['speech']
+        if response:
+            bot.send_message(chat_id=update.message.chat_id, text=response)
+        else:
+            bot.send_message(chat_id=update.message.chat_id, text='Я Вас не совсем понял!')
