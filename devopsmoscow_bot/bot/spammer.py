@@ -17,7 +17,11 @@ class Spammer:
     @staticmethod
     def start(bot, update):
         session = SqlAlchemy().init_session()
+        message = GreetingsMessage(message="TEST MESSAGE!")
+        session.add(message)
+        session.commit()
         greetings = session.query(GreetingsMessage).first()
+        session.close()
         bot.send_message(chat_id=update.message.chat_id, text=greetings)
 
     class NewMember(BaseFilter):
