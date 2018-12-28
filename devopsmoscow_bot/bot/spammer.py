@@ -16,7 +16,7 @@ class Spammer:
 
     @staticmethod
     def start(bot, update):
-        if update.message.chat_id is not bot_properties.GROUP_CHAT_ID:
+        if update.message.chat_id is bot_properties.GROUP_CHAT_ID:
             bot.send_message(chat_id=update.message.chat_id, text="This bot is under construction. You'll get an "
                                                                   "additional notification once it will be done.")
         else:
