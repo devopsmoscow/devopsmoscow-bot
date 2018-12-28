@@ -5,6 +5,8 @@ import apiai
 from telegram.ext import BaseFilter
 
 from devopsmoscow_bot import bot_properties
+from devopsmoscow_bot.database.repository import GreetingsMessage
+from devopsmoscow_bot.database.sqlalchemy import SqlAlchemy
 
 
 class Spammer:
@@ -14,11 +16,13 @@ class Spammer:
 
     @staticmethod
     def start(bot, update):
-        if update.message.chat_id is not bot_properties.DEVOPS_SUPERGROUP_DETAILS['id']:
+        if update.message.chat_id is not bot_properties.GROUP_CHAT_ID:
             bot.send_message(chat_id=update.message.chat_id, text="This bot is under construction. You'll get an "
                                                                   "additional notification once it will be done.")
         else:
-            pass
+            session = SqlAlchemy().init_session()
+            greetings = session.query(GreetingsMessage).first()
+            bot.send_message(chat_id=update.message.chat_id, text=greetings)
 
     class NewMember(BaseFilter):
         def filter(self, message):
@@ -44,7 +48,7 @@ class Spammer:
         bot.send_message(chat_id=chat_id, text="Hey hi! Ima DevOps Moscow Bot!")
 
     @staticmethod
-    def textMessage(bot, update):
+    def dialogFlowMessage(bot, update):
         request = apiai.ApiAI(bot_properties.DIALOGFLOW_TOKEN).text_request()
         request.lang = 'ru'
         request.session_id = 'DevOpsMoscowBot'
