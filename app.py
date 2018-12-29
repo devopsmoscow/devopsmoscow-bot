@@ -5,7 +5,7 @@ import logging
 
 from devopsmoscow_bot.database.liquibase.init import LiquibaseInit
 
-LiquibaseInit().run_liquibase()
+#LiquibaseInit().run_liquibase()
 
 updater = Updater(token=bot_properties.TG_BOT_TOKEN, request_kwargs={'read_timeout': 20, 'connect_timeout': 40})
 dispatcher = updater.dispatcher
