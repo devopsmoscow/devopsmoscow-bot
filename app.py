@@ -1,21 +1,29 @@
-import telegram
 from devopsmoscow_bot import bot_properties
-from telegram.ext import Updater
-from telegram.ext import CommandHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from devopsmoscow_bot.bot.spammer import Spammer
+import migrate.versioning.api
+import migrate.exceptions
+import logging
 
-bot = telegram.Bot(token=bot_properties.TG_BOT_TOKEN)
-print(bot.get_me())
+try:
+    migrate.versioning.api.version_control(url=bot_properties.DB_URL, repository='./devopsmoscow_bot_repo')
+except migrate.exceptions.DatabaseAlreadyControlledError as e:
+    pass
+migrate.versioning.api.upgrade(url=bot_properties.DB_URL, repository='./devopsmoscow_bot_repo')
 
 updater = Updater(token=bot_properties.TG_BOT_TOKEN, request_kwargs={'read_timeout': 20, 'connect_timeout': 40})
 dispatcher = updater.dispatcher
 
+start_handler = CommandHandler(command='start', callback=Spammer.start)
+welcome_handler = CommandHandler(command='welcome', callback=Spammer.send_welcome)
+add_group_handler = MessageHandler(callback=Spammer.add_group, filters=Spammer.NewMember())
+text_message_handler = MessageHandler(Filters.text, Spammer.dialogFlowMessage)
 
-def start(bot, update):
-    update.message.reply_text('Hi!')
-    bot.send_message(chat_id=update.message.chat_id, text="I'm a bot, please talk to me!")
-
-
-start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
+dispatcher.add_handler(welcome_handler)
+dispatcher.add_handler(add_group_handler)
+dispatcher.add_handler(text_message_handler)
+
 updater.start_polling()
 updater.idle()
+

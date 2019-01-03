@@ -1,1 +1,5 @@
 python-telegram-bot==11.1.0
+apiai==1.2.3
+sqlalchemy==1.2.15
+psycopg2==2.7.6.1
+sqlalchemy-migrate==0.11.0
