@@ -2,9 +2,13 @@ from devopsmoscow_bot import bot_properties
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from devopsmoscow_bot.bot.spammer import Spammer
 import migrate.versioning.api
+import migrate.exceptions
 import logging
 
-migrate.versioning.api.version_control(url=bot_properties.DB_URL, repository='./devopsmoscow_bot_repo')
+try:
+    migrate.versioning.api.version_control(url=bot_properties.DB_URL, repository='./devopsmoscow_bot_repo')
+except migrate.exceptions.DatabaseAlreadyControlledError as e:
+    pass
 migrate.versioning.api.upgrade(url=bot_properties.DB_URL, repository='./devopsmoscow_bot_repo')
 
 updater = Updater(token=bot_properties.TG_BOT_TOKEN, request_kwargs={'read_timeout': 20, 'connect_timeout': 40})
