@@ -57,5 +57,7 @@ class Spammer:
         response = response_json['result']['fulfillment']['speech']
         if response:
             bot.send_message(chat_id=update.message.chat_id, text=response)
+        elif response and update.message.chat_id == bot_properties.GROUP_CHAT_ID:
+            pass
         else:
             bot.send_message(chat_id=update.message.chat_id, text='Я Вас не совсем понял!')
