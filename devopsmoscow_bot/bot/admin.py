@@ -24,9 +24,10 @@ class Admin:
     @staticmethod
     def add_greetings(bot, update):
         logger = logging.getLogger("deopsmoscow_bot.bot.admin.Admin.add_greetings")
-        logger.debug("Got " + str(update.message.text) + " as message!")
+        message = update.message.text
+        logger.debug("Got " + str(message) + " as message!")
         session = SqlAlchemy().init_session()
-        session.query(GreetingsMessage).first().update(message=update.message.text)
+        session.query(GreetingsMessage).first().update(message=message)
         session.commit()
         greetings = session.query(GreetingsMessage).first()
         session.close()
