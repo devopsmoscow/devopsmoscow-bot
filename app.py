@@ -14,6 +14,7 @@ migrate.versioning.api.upgrade(url=bot_properties.DB_URL, repository='./devopsmo
 
 updater = Updater(token=bot_properties.TG_BOT_TOKEN, request_kwargs={'read_timeout': 20, 'connect_timeout': 40})
 dispatcher = updater.dispatcher
+job_queue = updater.job_queue
 
 start_handler = CommandHandler(command='start', callback=Spammer.start)
 welcome_handler = CommandHandler(command='welcome', callback=Spammer.send_welcome)
@@ -26,7 +27,7 @@ greetings_update_handler = ConversationHandler(
 )
 add_group_handler = MessageHandler(callback=Spammer.add_group, filters=Spammer.NewMember())
 text_message_handler = MessageHandler(Filters.text, Spammer.dialogFlowMessage)
-
+admin_sync_queue = job_queue.run_repeating(Admin.get_admins, interval=1, first=0)
 
 dispatcher.add_handler(start_handler)
 dispatcher.add_handler(welcome_handler)

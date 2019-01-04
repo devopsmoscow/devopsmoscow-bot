@@ -48,3 +48,8 @@ class Admin:
         update.message.reply_text('Возможно, в другой раз...',
                                   reply_markup=ReplyKeyboardRemove())
         return ConversationHandler.END
+
+    @staticmethod
+    def get_admins(bot, job):
+        logger = logging.getLogger("deopsmoscow_bot.bot.admin.Admin.get_admins")
+        logger.debug(str(bot.getChat(chat_id=bot_properties.GROUP_CHAT_ID).get_administrators))
