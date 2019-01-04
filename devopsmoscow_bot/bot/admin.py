@@ -6,6 +6,7 @@ from telegram.ext import BaseFilter, ConversationHandler
 
 from devopsmoscow_bot import bot_properties
 from devopsmoscow_bot.database.repository import GreetingsMessage
+import devopsmoscow_bot.database.repository
 from devopsmoscow_bot.database.sqlalchemy import SqlAlchemy
 
 
@@ -54,4 +55,12 @@ class Admin:
         logger = logging.getLogger("deopsmoscow_bot.bot.admin.Admin.get_admins")
         admins = bot.get_chat_administrators(chat_id=bot_properties.GROUP_CHAT_ID)
         for admin in admins:
-            logger.debug(str(admin.user.username))
+            logger.debug(str(admin.user.username) + ": " + str(admin.user.id))
+            session = SqlAlchemy().init_session()
+            stored_message = session.query(devopsmoscow_bot.database.repository.Admin).filter_by(id=admin.user.id)
+            if not stored_message:
+                session.add(devopsmoscow_bot.database.repository.Admin(id=admin.user.id))
+            else:
+                stored_message.id = admin.user.id
+                session.merge(stored_message)
+            session.commit()
