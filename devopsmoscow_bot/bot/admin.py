@@ -57,9 +57,9 @@ class Admin:
         for admin in admins:
             logger.debug(str(admin.user.username) + ": " + str(admin.user.id))
             session = SqlAlchemy().init_session()
-            stored_message = session.query(devopsmoscow_bot.database.repository.Admin).filter_by(id=admin.user.id)
+            stored_message = session.query(devopsmoscow_bot.database.repository.Admin).filter(devopsmoscow_bot.database.repository.Admin.id == admin.user.id)
             logger.debug(str(stored_message))
-            if not stored_message:
+            if not stored_message.count():
                 session.add(devopsmoscow_bot.database.repository.Admin(id=admin.user.id))
             else:
                 stored_message.id = admin.user.id
