@@ -31,7 +31,7 @@ class Admin:
         if not stored_message:
             session.add(GreetingsMessage(message=message))
         else:
-            stored_message.update(message=message)
+            session.query(GreetingsMessage).first().update(message=message)
         session.commit()
         greetings = session.query(GreetingsMessage).first()
         session.close()
