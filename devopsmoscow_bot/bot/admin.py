@@ -27,7 +27,11 @@ class Admin:
         message = update.message.text
         logger.debug("Got " + str(message) + " as message!")
         session = SqlAlchemy().init_session()
-        session.query(GreetingsMessage).first().update(message=message)
+        stored_message = session.query(GreetingsMessage).first()
+        if not stored_message:
+            session.add(GreetingsMessage(message=message))
+        else:
+            stored_message.update(message=message)
         session.commit()
         greetings = session.query(GreetingsMessage).first()
         session.close()
