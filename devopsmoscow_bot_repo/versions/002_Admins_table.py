@@ -4,7 +4,7 @@ from migrate import *
 meta = MetaData()
 
 admins = Table(
-    'greetings_message', meta,
+    'admins', meta,
     Column('id', Integer, primary_key=True)
 )
 
