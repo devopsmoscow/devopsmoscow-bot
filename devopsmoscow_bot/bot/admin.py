@@ -25,8 +25,18 @@ class Admin:
     def add_greetings(bot, update):
         logger = logging.getLogger("deopsmoscow_bot.bot.admin.Admin.add_greetings")
         logger.debug("Got " + str(update.message.text) + " as message!")
-        bot.send_message(chat_id=update.message.chat_id, text="Получил текст: " + update.message.text)
+        session = SqlAlchemy().init_session()
+        session.query(GreetingsMessage).first().delete()
+        session.commit()
+        message = GreetingsMessage(message=update.message.text)
+        session.add(message)
+        session.commit()
+        greetings = session.query(GreetingsMessage).first()
+        session.close()
+        bot.send_message(chat_id=update.message.chat_id, text="Так и записал: " + greetings)
+        return ConversationHandler.END
 
+    @staticmethod
     def cancel(bot, update):
         logger = logging.getLogger("deopsmoscow_bot.bot.admin.Admin.cancel")
         user = update.message.from_user
