@@ -1,5 +1,5 @@
 from devopsmoscow_bot import bot_properties
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 from devopsmoscow_bot.bot.spammer import Spammer
 from devopsmoscow_bot.bot.admin import Admin
 import migrate.versioning.api
@@ -17,9 +17,16 @@ dispatcher = updater.dispatcher
 
 start_handler = CommandHandler(command='start', callback=Spammer.start)
 welcome_handler = CommandHandler(command='welcome', callback=Spammer.send_welcome)
-greetings_update_handler = CommandHandler(command='new_greetings', callback=Admin.new_greetings, pass_user_data=True)
+greetings_update_handler = ConversationHandler(
+    entry_points=[CommandHandler('new_greetings', Admin.new_greetings)],
+    states={
+        "ADD_GREETING": [MessageHandler(Filters.text, Admin.add_greetings)]
+    },
+    fallbacks=[CommandHandler('cancel', Admin.cancel)]
+)
 add_group_handler = MessageHandler(callback=Spammer.add_group, filters=Spammer.NewMember())
 text_message_handler = MessageHandler(Filters.text, Spammer.dialogFlowMessage)
+
 
 dispatcher.add_handler(start_handler)
 dispatcher.add_handler(welcome_handler)
