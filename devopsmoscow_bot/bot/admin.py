@@ -53,4 +53,5 @@ class Admin:
     def get_admins(bot, job):
         logger = logging.getLogger("deopsmoscow_bot.bot.admin.Admin.get_admins")
         admins = bot.get_chat_administrators(chat_id=bot_properties.GROUP_CHAT_ID)
-        logger.debug(str(admins))
+        for admin in admins:
+            logger.debug(str(admin.user.username))
