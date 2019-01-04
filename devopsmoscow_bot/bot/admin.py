@@ -19,8 +19,16 @@ class Admin:
     @staticmethod
     def new_greetings(bot, update):
         logger = logging.getLogger("deopsmoscow_bot.bot.admin.Admin.new_greetings")
-        bot.send_message(chat_id=update.message.chat_id, text="Следующим соообщением отправьте новое приветствие.")
-        return "ADD_GREETING"
+        session = SqlAlchemy().init_session()
+        stored_admin = session.query(devopsmoscow_bot.database.repository.Admin).filter(
+            devopsmoscow_bot.database.repository.Admin.id == update.message.from_user.id)
+        if not stored_admin.count():
+            logger.debug("Access violation for user: " + str(update.message.from_user.username) + ": " + str(update.message.from_user.id))
+            bot.send_message(chat_id=update.message.chat_id, text="Вы не админ! Доступ запрещён!")
+            return ConversationHandler.END
+        else:
+            bot.send_message(chat_id=update.message.chat_id, text="Следующим соообщением отправьте новое приветствие.")
+            return "ADD_GREETING"
 
     @staticmethod
     def add_greetings(bot, update):
@@ -57,11 +65,11 @@ class Admin:
         for admin in admins:
             logger.debug(str(admin.user.username) + ": " + str(admin.user.id))
             session = SqlAlchemy().init_session()
-            stored_message = session.query(devopsmoscow_bot.database.repository.Admin).filter(devopsmoscow_bot.database.repository.Admin.id == admin.user.id)
-            logger.debug(str(stored_message))
-            if not stored_message.count():
+            stored_admin = session.query(devopsmoscow_bot.database.repository.Admin).filter(devopsmoscow_bot.database.repository.Admin.id == admin.user.id)
+            logger.debug(str(stored_admin))
+            if not stored_admin.count():
                 session.add(devopsmoscow_bot.database.repository.Admin(id=admin.user.id))
             else:
-                stored_message.id = admin.user.id
-                session.merge(stored_message)
+                stored_admin.id = admin.user.id
+                session.merge(stored_admin)
             session.commit()
