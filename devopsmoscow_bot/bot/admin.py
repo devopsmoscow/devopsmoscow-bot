@@ -35,7 +35,7 @@ class Admin:
         session.commit()
         greetings = session.query(GreetingsMessage).first()
         session.close()
-        bot.send_message(chat_id=update.message.chat_id, text="Так и записал: " + greetings)
+        bot.send_message(chat_id=update.message.chat_id, text="Так и записал: " + str(greetings))
         return ConversationHandler.END
 
     @staticmethod
