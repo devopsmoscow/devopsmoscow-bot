@@ -69,7 +69,4 @@ class Admin:
             logger.debug(str(stored_admin))
             if not stored_admin.count():
                 session.add(devopsmoscow_bot.database.repository.Admin(id=admin.user.id))
-            else:
-                stored_admin.id = admin.user.id
-                session.merge(stored_admin)
             session.commit()
