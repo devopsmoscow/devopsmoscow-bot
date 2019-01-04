@@ -27,7 +27,7 @@ greetings_update_handler = ConversationHandler(
 )
 add_group_handler = MessageHandler(callback=Spammer.add_group, filters=Spammer.NewMember())
 text_message_handler = MessageHandler(Filters.text, Spammer.dialogFlowMessage)
-admin_sync_queue = job_queue.run_repeating(Admin.get_admins, interval=1, first=0)
+admin_sync_queue = job_queue.run_repeating(Admin.get_admins, interval=60, first=0)
 
 dispatcher.add_handler(start_handler)
 dispatcher.add_handler(welcome_handler)
