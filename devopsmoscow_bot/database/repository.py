@@ -16,6 +16,6 @@ class Admin(Base):
 
 
 class GreetingsMessage(Base):
-    __tablename__ = 'greetings'
+    __tablename__ = 'greetings_message'
     id = Column(Integer, primary_key=True)
     message = Column(String)
