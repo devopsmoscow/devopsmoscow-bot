@@ -16,9 +16,8 @@ class Admin:
 
 
     @staticmethod
-    def new_greetings(bot, update, user_data):
+    def new_greetings(bot, update):
         logger = logging.getLogger("deopsmoscow_bot.bot.admin.Admin.new_greetings")
-        logger.debug("Got " + str(user_data) + " as user_data!")
         bot.send_message(chat_id=update.message.chat_id, text="Следующим соообщением отправьте новое приветствие.")
         return "ADD_GREETING"
 
