@@ -53,7 +53,7 @@ class Spammer:
         if update.message.text.find(mention) != -1:
             logger.debug("Got mention of " + mention + ": " + update.message.text)
         if update.message.chat_id != bot_properties.GROUP_CHAT_ID:
-            logger.debug("Got matching of " + bot_properties.GROUP_CHAT_ID + " with " + update.message.chat_id)
+            logger.debug("Got matching of " + str(bot_properties.GROUP_CHAT_ID) + " with " + str(update.message.chat_id))
         if (update.message.text.find(mention) != -1) or (update.message.chat_id != bot_properties.GROUP_CHAT_ID):
             logger.debug("Processing with DialogFlow")
             request = apiai.ApiAI(bot_properties.DIALOGFLOW_TOKEN).text_request()
