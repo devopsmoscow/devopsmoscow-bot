@@ -49,7 +49,9 @@ class Spammer:
     @staticmethod
     def dialog_flow_message(bot, update):
         logger = logging.getLogger("deopsmoscow_bot.bot.spammer.Spammer.dialog_flow_message")
-        if update.message.text[0] != '@':
+        mention = "@" + bot.getMe().username
+        if mention in update.message.text and update.message.chat_id != bot_properties.GROUP_CHAT_ID:
+            logger.debug("Processing with DialogFlow")
             request = apiai.ApiAI(bot_properties.DIALOGFLOW_TOKEN).text_request()
             request.lang = 'ru'
             request.session_id = 'DevOpsMoscowBot'
