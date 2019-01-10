@@ -59,6 +59,10 @@ class Spammer:
             response_json = json.loads(request.getresponse().read().decode('utf-8'))
             response = response_json['result']['fulfillment']['speech']
             if response:
+                try:
+                    logger.debug(str(response))
+                except Exception as e:
+                    pass
                 bot.send_message(chat_id=update.message.chat_id, text=response)
             elif not response and update.message.chat_id == bot_properties.GROUP_CHAT_ID:
                 pass
