@@ -19,16 +19,17 @@ class Admin:
     @staticmethod
     def new_greetings(bot, update):
         logger = logging.getLogger("deopsmoscow_bot.bot.admin.Admin.new_greetings")
-        session = SqlAlchemy().init_session()
-        stored_admin = session.query(devopsmoscow_bot.database.repository.Admin).filter(
-            devopsmoscow_bot.database.repository.Admin.id == update.message.from_user.id)
-        if not stored_admin.count():
-            logger.debug("Access violation for user: " + str(update.message.from_user.username) + ": " + str(update.message.from_user.id))
-            bot.send_message(chat_id=update.message.chat_id, text="Вы не админ! Доступ запрещён!")
-            return ConversationHandler.END
-        else:
-            bot.send_message(chat_id=update.message.chat_id, text="Следующим соообщением отправьте новое приветствие.")
-            return "ADD_GREETING"
+        if update.message.chat_id != bot_properties.GROUP_CHAT_ID:
+            session = SqlAlchemy().init_session()
+            stored_admin = session.query(devopsmoscow_bot.database.repository.Admin).filter(
+                devopsmoscow_bot.database.repository.Admin.id == update.message.from_user.id)
+            if not stored_admin.count():
+                logger.debug("Access violation for user: " + str(update.message.from_user.username) + ": " + str(update.message.from_user.id))
+                bot.send_message(chat_id=update.message.chat_id, text="Вы не админ! Доступ запрещён!")
+                return ConversationHandler.END
+            else:
+                bot.send_message(chat_id=update.message.chat_id, text="Следующим соообщением отправьте новое приветствие.")
+                return "ADD_GREETING"
 
     @staticmethod
     def add_greetings(bot, update):
@@ -70,3 +71,4 @@ class Admin:
             if not stored_admin.count():
                 session.add(devopsmoscow_bot.database.repository.Admin(id=admin.user.id))
             session.commit()
+            session.close()

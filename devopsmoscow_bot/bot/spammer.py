@@ -16,10 +16,11 @@ class Spammer:
 
     @staticmethod
     def start(bot, update):
-        session = SqlAlchemy().init_session()
-        greetings = session.query(GreetingsMessage).first()
-        session.close()
-        bot.send_message(chat_id=update.message.chat_id, text=greetings.message)
+        if update.message.chat_id != bot_properties.GROUP_CHAT_ID:
+            session = SqlAlchemy().init_session()
+            greetings = session.query(GreetingsMessage).first()
+            session.close()
+            bot.send_message(chat_id=update.message.chat_id, text=greetings.message)
 
     class NewMember(BaseFilter):
         def filter(self, message):
@@ -46,15 +47,16 @@ class Spammer:
 
     @staticmethod
     def dialogFlowMessage(bot, update):
-        request = apiai.ApiAI(bot_properties.DIALOGFLOW_TOKEN).text_request()
-        request.lang = 'ru'
-        request.session_id = 'DevOpsMoscowBot'
-        request.query = update.message.text
-        response_json = json.loads(request.getresponse().read().decode('utf-8'))
-        response = response_json['result']['fulfillment']['speech']
-        if response:
-            bot.send_message(chat_id=update.message.chat_id, text=response)
-        elif response and update.message.chat_id == bot_properties.GROUP_CHAT_ID:
-            pass
-        else:
-            bot.send_message(chat_id=update.message.chat_id, text='Я Вас не совсем понял!')
+        if update.message.text[0] != '@':
+            request = apiai.ApiAI(bot_properties.DIALOGFLOW_TOKEN).text_request()
+            request.lang = 'ru'
+            request.session_id = 'DevOpsMoscowBot'
+            request.query = update.message.text
+            response_json = json.loads(request.getresponse().read().decode('utf-8'))
+            response = response_json['result']['fulfillment']['speech']
+            if response:
+                bot.send_message(chat_id=update.message.chat_id, text=response)
+            elif not response and update.message.chat_id == bot_properties.GROUP_CHAT_ID:
+                pass
+            else:
+                bot.send_message(chat_id=update.message.chat_id, text='Я Вас не совсем понял!')
