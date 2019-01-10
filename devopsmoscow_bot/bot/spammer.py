@@ -43,10 +43,12 @@ class Spammer:
         logger.debug("Messaging user!")
         chat_id = update.message.from_user.id
         logger.debug("Sending message to " + str(chat_id))
+        logger.debug(bot.getMe().username)
         bot.send_message(chat_id=chat_id, text="Hey hi! Ima DevOps Moscow Bot!")
 
     @staticmethod
-    def dialogFlowMessage(bot, update):
+    def dialog_flow_message(bot, update):
+        logger = logging.getLogger("deopsmoscow_bot.bot.spammer.Spammer.dialog_flow_message")
         if update.message.text[0] != '@':
             request = apiai.ApiAI(bot_properties.DIALOGFLOW_TOKEN).text_request()
             request.lang = 'ru'
@@ -60,3 +62,5 @@ class Spammer:
                 pass
             else:
                 bot.send_message(chat_id=update.message.chat_id, text='Я Вас не совсем понял!')
+        else:
+            logger.debug("Found '@' character - ignoring message.")
