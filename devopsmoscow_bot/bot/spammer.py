@@ -58,9 +58,9 @@ class Spammer:
             request.query = update.message.text
             response_json = json.loads(request.getresponse().read().decode('utf-8'))
             response = response_json['result']['fulfillment']['speech']
-            if response:
+            if response_json:
                 try:
-                    logger.debug(str(response))
+                    logger.debug(str(response_json))
                 except Exception as e:
                     pass
                 bot.send_message(chat_id=update.message.chat_id, text=response)
