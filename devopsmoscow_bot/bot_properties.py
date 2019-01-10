@@ -7,4 +7,4 @@ logging.basicConfig(level=logging.DEBUG,
 TG_BOT_TOKEN = os.environ['TG_KEY']
 DIALOGFLOW_TOKEN = os.environ['DF_TOKEN']
 DB_URL = os.environ['DATABASE_URL']
-GROUP_CHAT_ID = os.environ['GROUP_CHAT_ID']
+GROUP_CHAT_ID = int(os.environ['GROUP_CHAT_ID'])
