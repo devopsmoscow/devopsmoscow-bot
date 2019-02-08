@@ -23,6 +23,7 @@ class Admin:
             session = SqlAlchemy().init_session()
             stored_admin = session.query(devopsmoscow_bot.database.repository.Admin).filter(
                 devopsmoscow_bot.database.repository.Admin.id == update.message.from_user.id)
+            session.close()
             if not stored_admin.count():
                 logger.debug("Access violation for user: " + str(update.message.from_user.username) + ": " + str(update.message.from_user.id))
                 bot.send_message(chat_id=update.message.chat_id, text="Вы не админ! Доступ запрещён!")
