@@ -35,12 +35,18 @@ class Meetup(Base):
 
 
 class PlatformQuestions(Base):
-    __tablename__ = 'greetings_message'
+    __tablename__ = 'platform_questions'
     id = Column(Integer, primary_key=True)
     question = Column(String)
 
 
 class AnnounceQuestions(Base):
-    __tablename__ = 'greetings_message'
+    __tablename__ = 'announce_questions'
+    id = Column(Integer, primary_key=True)
+    question = Column(String)
+
+
+class SpeakerQuestions(Base):
+    __tablename__ = 'speaker_questions'
     id = Column(Integer, primary_key=True)
     question = Column(String)
